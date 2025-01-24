@@ -1,129 +1,54 @@
-import { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  FlatList,
-  Alert,
-} from 'react-native';
-import { SafeAreaView } from 'react-native';
-import 
+import React from 'react';
+import { StyleSheet, View, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Calculator from './calculator'; 
+import ShoppingList from './shopinglist'; 
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const [inputs, setInputs] = useState({
-    num1: '',
-    num2: '',
-  });
-  const [result, setResult] = useState(null);
-  const [history, setHistory] = useState([]); 
-
-  const handleAdd = () => {
-    const { num1, num2 } = inputs;
-    if (!num1 || !num2) {
-      Alert.alert('Warning', 'Please enter both numbers');
-      return;
-    }
-    const sum = parseFloat(num1) + parseFloat(num2);
-    setResult(sum);
-    setHistory([...history, { key: `${num1} + ${num2} = ${sum}` }]); 
-    setInputs({ num1: '', num2: '' });
-  };
-
-  const handleSubtract = () => {
-    const { num1, num2 } = inputs;
-    if (!num1 || !num2) {
-      Alert.alert('Warning', 'Please enter both numbers');
-      return;
-    }
-    const difference = parseFloat(num1) - parseFloat(num2);
-    setResult(difference);
-    setHistory([...history, { key: `${num1} - ${num2} = ${difference}` }]); // Add to history
-    setInputs({ num1: '', num2: '' });
-  };
-
-  const ListEmptyComponent = () => {
-    return (
-      <View>
-        <Text style={{ fontSize: 20 }}>No Calculations Yet</Text>
-      </View>
-    );
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        placeholder="Enter first number"
-        value={inputs.num1}
-        onChangeText={(text) => setInputs({ ...inputs, num1: text })}
-        keyboardType="numeric"
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Enter second number"
-        value={inputs.num2}
-        onChangeText={(text) => setInputs({ ...inputs, num2: text })}
-        keyboardType="numeric"
-        style={styles.input}
-      />
-      <View style={styles.buttonContainer}>
-        <Button title="Add" onPress={handleAdd} />
-        <Button title="Subtract" onPress={handleSubtract} />
-      </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        
+        <Stack.Screen name="Home" component={HomeScreen} />
 
-      {result !== null && <Text style={styles.resultText}>Result: {result}</Text>}
+        
+        <Stack.Screen name="Calculator" component={Calculator} />
 
-      <FlatList
-        data={history}
-        ListEmptyComponent={ListEmptyComponent}
-        renderItem={({ item }) => (
-          <View>
-            <Text style={styles.historyText}>{item.key}</Text>
-          </View>
-        )}
+        
+        <Stack.Screen name="ShoppingList" component={ShoppingList} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+function HomeScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <Button
+        title="Go to Calculator"
+        onPress={() => navigation.navigate('Calculator')}
       />
-
-      <StatusBar style="auto" />
-    </SafeAreaView>
+      <Button
+        title="Go to Shopping List"
+        onPress={() => navigation.navigate('ShoppingList')}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
-    marginTop: 70,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    color: 'red',
-    padding: 10,
-    margin: 10,
-    width: '80%',
-    borderRadius: 5,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '60%',
-    marginVertical: 10,
-  },
-  resultText: {
-    fontSize: 20,
-    color: 'blue',
-    margin: 0,
-  },
-  historyText: {
-    fontSize: 16,
-    padding: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    textAlign: 'center',
-  },
+ 
+
+
 });
+
