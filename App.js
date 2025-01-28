@@ -1,13 +1,26 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Make sure to install react-native-vector-icons
+import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Ensure react-native-vector-icons is installed
 
-import Calculator from './Components/calculator'; 
+import Calculator from './Components/calculator';
+import History from './Components/History';
 import ShoppingList from './Components/shopinglist';
 import HomeScreen from './Components/Home';
 
 const Tab = createBottomTabNavigator();
+const CalculatorStack = createStackNavigator();
+
+// Add the CalculatorStackNavigator function here
+function CalculatorStackNavigator() {
+  return (
+    <CalculatorStack.Navigator>
+      <CalculatorStack.Screen name="Calculator" component={Calculator} />
+      <CalculatorStack.Screen name="History" component={History} />
+    </CalculatorStack.Navigator>
+  );
+}
 
 export default function App() {
   return (
@@ -33,7 +46,11 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Calculator" component={Calculator} />
+        <Tab.Screen
+          name="Calculator"
+          component={CalculatorStackNavigator}
+          options={{ headerShown: false }} // Hide the header for the stack
+        />
         <Tab.Screen name="ShoppingList" component={ShoppingList} />
       </Tab.Navigator>
     </NavigationContainer>

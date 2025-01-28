@@ -1,55 +1,43 @@
-import { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Button,
   TextInput,
-  FlatList,
-  Alert,
+  SafeAreaView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native';
 
-
-export default function Calculator() {
+export default function Calculator({ navigation }) {
   const [inputs, setInputs] = useState({
     num1: '',
     num2: '',
   });
   const [result, setResult] = useState(null);
-  const [history, setHistory] = useState([]); 
+  const [history, setHistory] = useState([]);
 
   const handleAdd = () => {
     const { num1, num2 } = inputs;
     if (!num1 || !num2) {
-      Alert.alert('Warning', 'Please enter both numbers');
+      alert('Please enter both numbers');
       return;
     }
     const sum = parseFloat(num1) + parseFloat(num2);
     setResult(sum);
-    setHistory([...history, { key: `${num1} + ${num2} = ${sum}` }]); 
+    setHistory([...history, `${num1} + ${num2} = ${sum}`]);
     setInputs({ num1: '', num2: '' });
   };
 
   const handleSubtract = () => {
     const { num1, num2 } = inputs;
     if (!num1 || !num2) {
-      Alert.alert('Warning', 'Please enter both numbers');
+      alert('Please enter both numbers');
       return;
     }
     const difference = parseFloat(num1) - parseFloat(num2);
     setResult(difference);
-    setHistory([...history, { key: `${num1} - ${num2} = ${difference}` }]); // Add to history
+    setHistory([...history, `${num1} - ${num2} = ${difference}`]);
     setInputs({ num1: '', num2: '' });
-  };
-
-  const ListEmptyComponent = () => {
-    return (
-      <View>
-        <Text style={{ fontSize: 20 }}>No Calculations Yet</Text>
-      </View>
-    );
   };
 
   return (
@@ -75,17 +63,10 @@ export default function Calculator() {
 
       {result !== null && <Text style={styles.resultText}>Result: {result}</Text>}
 
-      <FlatList
-        data={history}
-        ListEmptyComponent={ListEmptyComponent}
-        renderItem={({ item }) => (
-          <View>
-            <Text style={styles.historyText}>{item.key}</Text>
-          </View>
-        )}
+      <Button
+        title="Go to History"
+        onPress={() => navigation.navigate('History', { history })}
       />
-
-      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
@@ -102,7 +83,6 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    color: 'red',
     padding: 10,
     margin: 10,
     width: '80%',
@@ -117,13 +97,6 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 20,
     color: 'blue',
-    margin: 0,
-  },
-  historyText: {
-    fontSize: 16,
-    padding: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    textAlign: 'center',
+    margin: 10,
   },
 });
