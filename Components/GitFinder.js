@@ -11,6 +11,7 @@ import {
     Linking,
   } from 'react-native';
   import { useState } from 'react';
+  import {GITHUB_API_URL } from  '@env';
   
   export default function GitFinder() {
     const [keyword, setKeyword] = useState('');
@@ -20,7 +21,7 @@ import {
       if (!keyword) {
         Alert.alert('Please enter a keyword');
       } else {
-        fetch(`https://api.github.com/search/repositories?q=${keyword}`)
+        fetch(`${GITHUB_API_URL}?q=${keyword}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error('Failed to fetch data');
