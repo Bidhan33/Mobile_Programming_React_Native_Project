@@ -9,6 +9,7 @@ import History from './Components/History';
 import ShoppingList from './Components/shopinglist';
 import HomeScreen from './Components/Home';
 import GitFinder from './Components/GitFinder';
+import Recipe from './Components/Recipe';
 
 const Tab = createBottomTabNavigator();
 const CalculatorStack = createStackNavigator();
@@ -57,6 +58,7 @@ export default function App() {
         <Tab.Screen name="Calculator" component={CalculatorStackNavigator} />
         <Tab.Screen name="ShoppingList" component={ShoppingList} />
         <Tab.Screen name="Git Finder" component={GitFinder} />
+        <Tab.Screen name="Recipe" component={Recipe} />
       </Tab.Navigator>
     </NavigationContainer>
   );
