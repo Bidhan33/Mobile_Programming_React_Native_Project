@@ -4,3 +4,4 @@
 # Added HomeScreeen Claculator Page, Setting, History, and ShoppingList Page 
 # Udated on API 
 # Update on Github Repo Searching Page 
+# update Google map 
